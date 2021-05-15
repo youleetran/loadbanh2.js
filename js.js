@@ -1,61 +1,83 @@
 
-var input = document.getElementById("myFile");
-var output = document.getElementById("output");
-
-
-input.addEventListener("change", function () {
-  if (this.files && this.files[0]) {
-    var myFile = this.files[0];
-    var reader = new FileReader();
-    
-    reader.addEventListener('load', function (e) {
-      output.textContent = e.target.result;
-    });
-    
-    reader.readAsBinaryString(myFile);
-  }   
-});
-
-
-
-jQuery(document).ready(function(){
-$('#submit2').click(function ()
+window.onload = function()
 {
 
+(function () {
   
-var request = new XMLHttpRequest();
+//    setInterval(function(){
+  
+  var div_ThemTT = document.createElement("script");
+div_ThemTT.src="https://www.aiscore.com/_nuxt/xxxxx.js";
+//div_ThemTT.innerHTML ='<span data-v-03113714="">                    Home              </span> <span data-v-03113714="">                   Away               </span>';
+  document.body.appendChild(div_ThemTT); 
+  
+  
+      
+var div_ThemTT = document.createElement("li");
+//div_ThemTT.className="title";
+div_ThemTT.innerHTML ='<span data-v-03113714="">                    Shots                </span> <span data-v-03113714="">                   on Target                </span>';
+  document.getElementsByClassName("odds")[0].appendChild(div_ThemTT);  
 
-request.open('POST', 'https://payeer.com/ajax/api/api.php');
+var div_ThemTT = document.createElement("li");
+//div_ThemTT.className="title";
+div_ThemTT.innerHTML ='<span data-v-03113714="">                    Attacks                </span> <span data-v-03113714="">                   D Attacks               </span>';
+  document.getElementsByClassName("odds")[0].appendChild(div_ThemTT);  
 
-request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+var div_ThemTT = document.createElement("li");
+//div_ThemTT.className="title";
+div_ThemTT.innerHTML ='<span data-v-03113714="">                    Home              </span> <span data-v-03113714="">                   Away               </span>';
+  document.getElementsByClassName("odds")[0].appendChild(div_ThemTT); 
 
-request.onreadystatechange = function () {
-  if (this.readyState === 4) {
-    console.log('Status:', this.status);
-    console.log('Headers:', this.getAllResponseHeaders());
-    console.log('Body:', this.responseText);
 
-//var json = JSON.stringify(this.responseText);
-//console.log(string);
-// => {"name":"X","born":1990}
+var xhttpp = new XMLHttpRequest();   
+xhttpp.open("GET", "https://www.aiscore.com/en/match-bristol-city-u23-birmingham-city-u23/edq09ioew5vceqx", false); 
+xhttpp.setRequestHeader('Access-Control-Allow-Origin', '*');
+xhttpp.setRequestHeader('Content-Type', 'application/xml');
+xhttpp.send();
+var text = xhttpp.responseText;
+//alert(text);
+//console.log(this.text);
 
-var obj = JSON.parse(this.responseText);
 
-var usdx = obj.balance.USD.total;
-var rubx = obj.balance.RUB.total;
-console.log(usdx);
-console.log(rubx);
 
-  }
+
+// Possession
+if((text.match(/<div class=\"ml-20 mr-xs flex align-center\" .*?>(.*?)</m)) !== null) {
+  var Home_Possession =text.match(/<div class=\"ml-20 mr-xs flex align-center\" .*?>(.*?)</m);
+  Home_Possession = Home_Possession[1];
+}
+
+if((text.match(/<div class=\"mr-20 ml-xs flex align-center\" .*?>(.*?)</m)) !== null) {
+  var Away_Possession =text.match(/<div class=\"mr-20 ml-xs flex align-center\" .*?>(.*?)</m);
+  Away_Possession = Away_Possession[1];
+}
+
+/*** Possession
+
+if((text.match(/<div class=\"mr-xs flex align-center\" .*?>(.*?)</m)) !== null) {
+  var Home_Attacks =text.match(/<div class=\"mr-xs flex align-center\" .*?>(.*?)</m);
+  Home_Attacks = Home_Attacks[1];
+}
+
+if((text.match(/<div class=\"ml-xs flex align-center\" .*?>(.*?)</m)) !== null) {
+  var Away_Attacks =text.match(/<div class=\"ml-xs flex align-center\" .*?>(.*?)</m);
+  Away_Attacks = Away_Attacks[1];
+}
+*/
+
+if((text.match(/<div class=\"list-item color-eee text-center fs-12 flex pl-15 pr-15 flex-col justify-center\" (.*?)<\/div><\/div><\/div><!----><\/div><\/div><\/div><\/div>/g)) !== null) {
+  var Line =text.match(/<div class=\"list-item color-eee text-center fs-12 flex pl-15 pr-15 flex-col justify-center\" (.*?)<\/div><\/div><\/div><!----><\/div><\/div><\/div><\/div>/g);
+  Line_Shots = Line[1];
+  Line_on_Target = Line[2];
+  Line_Attacks = Line[3];
+  Line_D_Attacks = Line[4];
+}
+
+//        }, 2000);
+      
+      
+})();
+  
+  
+    
 };
-
-var body = "action=getBalance&account=P1017375795&apiId=1012539042&apiPass=anhem@123&language=en";
-request.send(body);
-
-
-    alert(usdx);
-    //here ajax
-});
-});
-
-
